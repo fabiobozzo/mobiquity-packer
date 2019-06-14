@@ -8,12 +8,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.mobiquityinc.exception.APIException;
+import com.mobiquityinc.packer.model.Configuration;
+import com.mobiquityinc.packer.model.Solution;
+import com.mobiquityinc.packer.solver.DynamicSolver;
+import com.mobiquityinc.packer.solver.ISolver;
+import com.mobiquityinc.packer.utils.ConfigurationParser;
 
 /**
  * Author: Fabio Bozzo
  *
  */
 public class Packer {
+	
+	private static final ISolver SOLVER = new DynamicSolver(); 
     
     public static String pack(String filePath) throws APIException {
     	
@@ -38,10 +45,24 @@ public class Packer {
     	return null;
     }
     
-    public static String process(String testCase) throws APIException {
+    public static String process(String line) throws APIException {
     	
-    	System.out.println(testCase);
+    	Configuration configuration = ConfigurationParser.parse(line);
     	
-    	return null;
+    	if ( configuration == null ) {
+    		throw new APIException("Invalid input file");
+    	}
+    	
+    	Solution solution = SOLVER.solve(configuration.getCapacity(), configuration.getItems());
+    	
+    	String solutionItemsList;
+    	
+    	if ( solution.getItems()!=null && !solution.getItems().isEmpty() ) {
+    		solutionItemsList = solution.getItems().stream().map( i-> i.getIndex().toString() ).collect(Collectors.joining(","));
+    	} else { 
+    		solutionItemsList = "-";
+    	}
+    	
+    	return solutionItemsList;
     }
 }

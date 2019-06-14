@@ -2,42 +2,43 @@ package com.mobiquityinc.packer.model;
 
 public class Item {
 	
-	public String name;
-	public int value;
-	public int weight;
+	private Integer index;
+	private Double weight;
+	private Integer value;
 	
-	public Item(String name, int value, int weight) {
-		this.name = name;
-		this.value = value;
+	public Item(Integer index, Double weight, Integer value) {
+		this.index = index;
 		this.weight = weight;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getValue() {
-		return value;
-	}
-
-	public void setValue(int value) {
 		this.value = value;
 	}
 
-	public int getWeight() {
+	public Integer getIndex() {
+		return index;
+	}
+
+	public void setIndex(Integer index) {
+		this.index = index;
+	}
+
+	public Double getWeight() {
 		return weight;
 	}
 
-	public void setWeight(int weight) {
+	public void setWeight(Double weight) {
 		this.weight = weight;
+	}
+
+	public Integer getValue() {
+		return value;
+	}
+
+	public void setValue(Integer value) {
+		this.value = value;
 	}
 
 	@Override
 	public String toString() {
-		return "Item [name=" + name + ", value=" + value + ", weight=" + weight + "]";
+		return "Item [index=" + index + ", value=" + value + ", weight=" + weight + "]";
 	}
+
 }

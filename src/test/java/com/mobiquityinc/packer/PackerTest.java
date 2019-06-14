@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,6 +28,12 @@ public class PackerTest
 		inputLines = readLinesFromResource("input-sample.txt");
 		outputLines = readLinesFromResource("output-sample.txt");
     }
+	
+	@After
+	public void teardown() {
+		inputLines = null;
+		outputLines = null;
+	}
 
 	@Test
     public void testResources() {
