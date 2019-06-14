@@ -18,8 +18,7 @@ import com.mobiquityinc.exception.APIException;
 /**
  * Unit test for Packer
  */
-public class PackerTest
-{
+public class PackerTest {
 	private List<String> inputLines;
 	private List<String> outputLines;
 	

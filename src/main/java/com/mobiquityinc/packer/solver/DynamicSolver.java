@@ -1,7 +1,6 @@
 package com.mobiquityinc.packer.solver;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.mobiquityinc.packer.model.Item;
@@ -16,6 +15,8 @@ public class DynamicSolver implements ISolver {
 			capacity *= 100;
 			items.stream().forEach(i -> i.setWeight(i.getWeight() * 100));
 		}
+		
+		items.sort( (i1,i2) -> i1.getWeight().compareTo(i2.getWeight()) );
 
 		Item[] itemsArray = new Item[items.size()];
 		itemsArray = items.toArray(itemsArray);
