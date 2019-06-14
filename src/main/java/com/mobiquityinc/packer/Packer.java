@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 import com.mobiquityinc.exception.APIException;
 import com.mobiquityinc.packer.model.Configuration;
 import com.mobiquityinc.packer.model.Solution;
-import com.mobiquityinc.packer.solver.DynamicSolver;
 import com.mobiquityinc.packer.solver.ISolver;
+import com.mobiquityinc.packer.solver.RecursiveSolver;
 import com.mobiquityinc.packer.utils.ConfigurationParser;
 
 /**
@@ -20,7 +20,8 @@ import com.mobiquityinc.packer.utils.ConfigurationParser;
  */
 public class Packer {
 	
-	private static final ISolver SOLVER = new DynamicSolver(); 
+//	private static final ISolver SOLVER = new DynamicSolver(); 
+	private static final ISolver SOLVER = new RecursiveSolver();
     
     public static String pack(String filePath) throws APIException {
     	

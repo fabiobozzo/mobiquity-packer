@@ -11,10 +11,15 @@ public class DynamicSolver implements ISolver {
 	@Override
 	public Solution solve(int capacity, List<Item> items) {
 
+		/* 
+		 * The following is necessary in case items include at least one item having non-integer weight. 
+		 * Each item's Weight should not have more than 2 fractional digits.
+		 * */
 		if (!onlyIntegerWeigths(items)) {
 			capacity *= 100;
 			items.stream().forEach(i -> i.setWeight(i.getWeight() * 100));
 		}
+		/* --- */
 		
 		items.sort( (i1,i2) -> i1.getWeight().compareTo(i2.getWeight()) );
 
@@ -43,19 +48,19 @@ public class DynamicSolver implements ISolver {
 
 		int res = matrix[N][capacity];
 		int w = capacity;
-		List<Item> itemsSolution = new ArrayList<>();
+		List<Item> solutionItems = new ArrayList<>();
 
 		for (int i = N; i > 0 && res > 0; i--) {
 			if (res != matrix[i - 1][w]) {
-				itemsSolution.add(itemsArray[i - 1]);
+				solutionItems.add(itemsArray[i - 1]);
 				res -= itemsArray[i - 1].getValue();
 				w -= itemsArray[i - 1].getWeight();
 			}
 		}
 		
-		itemsSolution.sort( (i1,i2) -> i1.getIndex().compareTo(i2.getIndex()) );
+		solutionItems.sort( (i1,i2) -> i1.getIndex().compareTo(i2.getIndex()) );
 
-		return new Solution(itemsSolution, matrix[N][capacity]);
+		return new Solution(solutionItems, matrix[N][capacity]);
 	}
 
 	public boolean onlyIntegerWeigths(List<Item> items) {
