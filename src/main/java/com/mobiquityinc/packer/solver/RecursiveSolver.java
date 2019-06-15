@@ -7,18 +7,35 @@ import java.util.List;
 import com.mobiquityinc.packer.model.Item;
 import com.mobiquityinc.packer.model.Solution;
 
+/**
+ * Recursive solution of the 0-1 Knapsack problem
+ * 
+ * @author Fabio Bozzo
+ *
+ */
 public class RecursiveSolver implements ISolver {
 
 	@Override
 	public Solution solve(int capacity, List<Item> items) {
 
+		/* 
+		 * The following line satisfy the requirements:
+		 * "You would prefer to send a package which weighs less in case there is more than one package with the same price."
+		 * 
+		 */
 		items.sort( (i1,i2) -> i1.getWeight().compareTo(i2.getWeight()) );
 		
+		/*
+		 * Initialize arrays: weights, values and visited items
+		 */
 		Double[] wt = items.stream().map(Item::getWeight).toArray(Double[]::new);
 		Integer[] val = items.stream().map(Item::getValue).toArray(Integer[]::new);
 		Boolean visited[] = new Boolean[items.size()];
 		Arrays.fill(visited, Boolean.FALSE);
 		
+		/*
+		 * Compute the recursion tree, keeping track of visited items
+		 */
 		Integer maxValue = maximizeValueFor(capacity, wt, val, items.size(), visited);
 		
 		List<Item> solutionItems = new ArrayList<>();
@@ -28,11 +45,22 @@ public class RecursiveSolver implements ISolver {
 			 }
 		}
 		
+		/*
+		 * Items included in the solution should be listed following index natural order
+		 */
 		solutionItems.sort( (i1,i2) -> i1.getIndex().compareTo(i2.getIndex()) );
 
 		return new Solution(solutionItems, maxValue);
 	}
 
+	/**
+	 * @param W the maximum capacity of the package
+	 * @param wt array of items weights
+	 * @param val array of items values
+	 * @param N total number of items
+	 * @param visited 
+	 * @return maximum value for the package
+	 */
 	private Integer maximizeValueFor(Integer W, Double wt[], Integer val[], Integer N, Boolean visited[]) {
 
 		if (N == 0 || W == 0) {

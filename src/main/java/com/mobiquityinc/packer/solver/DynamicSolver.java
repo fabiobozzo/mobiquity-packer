@@ -6,33 +6,53 @@ import java.util.List;
 import com.mobiquityinc.packer.model.Item;
 import com.mobiquityinc.packer.model.Solution;
 
+/**
+ * Dynamic Programming solution of the 0-1 Knapsack problem
+ * 
+ * @author Fabio Bozzo
+ *
+ */
 public class DynamicSolver implements ISolver {
 
 	@Override
 	public Solution solve(int capacity, List<Item> items) {
 
 		/* 
-		 * The following is necessary in case items include at least one item having non-integer weight. 
+		 * The following lines are necessary in case there's at least one item in items list having non-integer weight. 
 		 * Each item's Weight should not have more than 2 fractional digits.
-		 * */
+		 * 
+		 */
 		if (!onlyIntegerWeigths(items)) {
 			capacity *= 100;
 			items.stream().forEach(i -> i.setWeight(i.getWeight() * 100));
 		}
-		/* --- */
-		
+
+		/* 
+		 * The following line satisfy the requirements:
+		 * "You would prefer to send a package which weighs less in case there is more than one package with the same price."
+		 * 
+		 */
 		items.sort( (i1,i2) -> i1.getWeight().compareTo(i2.getWeight()) );
 
 		Item[] itemsArray = new Item[items.size()];
 		itemsArray = items.toArray(itemsArray);
 
+		/*
+		 * Create a matrix having N+1 rows and capacity+1 columns
+		 */
 		int N = items.size();
 		int[][] matrix = new int[N + 1][capacity + 1];
 
+		/*
+		 * Initialize the first zero-column
+		 */
 		for (int i = 0; i <= capacity; i++) {
 			matrix[0][i] = 0;
 		}
 		
+		/* 
+		 * Build the solutions matrix
+		 */
 		for (int i = 1; i <= N; i++) {
 			for (int j = 0; j <= capacity; j++) {
 				if (itemsArray[i - 1].getWeight() > j) {
@@ -46,10 +66,16 @@ public class DynamicSolver implements ISolver {
 			}
 		}
 
+		/*
+		 * Max value is in the lower right corner of the matrix
+		 */
 		int res = matrix[N][capacity];
 		int w = capacity;
 		List<Item> solutionItems = new ArrayList<>();
 
+		/*
+		 * Iterate the matrix in reverse order, looking for items to include in solution
+		 */
 		for (int i = N; i > 0 && res > 0; i--) {
 			if (res != matrix[i - 1][w]) {
 				solutionItems.add(itemsArray[i - 1]);
@@ -58,11 +84,18 @@ public class DynamicSolver implements ISolver {
 			}
 		}
 		
+		/*
+		 * Items included in the solution should be listed following index natural order
+		 */
 		solutionItems.sort( (i1,i2) -> i1.getIndex().compareTo(i2.getIndex()) );
 
 		return new Solution(solutionItems, matrix[N][capacity]);
 	}
 
+	/**
+	 * @param items
+	 * @return false if there's at least one items' element having non-integer weight 
+	 */
 	public boolean onlyIntegerWeigths(List<Item> items) {
 
 		boolean allIntegers = true;

@@ -6,8 +6,18 @@ import java.util.List;
 import com.mobiquityinc.packer.model.Configuration;
 import com.mobiquityinc.packer.model.Item;
 
+/**
+ * An utility class to parse raw input data into a Configuration object
+ * 
+ * @author Fabio Bozzo
+ *
+ */
 public class ConfigurationParser {
 
+	/**
+	 * @param line in the input sample data format
+	 * @return a Configuration object, holding input data
+	 */
 	public static Configuration parse(String line) {
 		
 		Configuration configuration = null;

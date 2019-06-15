@@ -15,14 +15,21 @@ import com.mobiquityinc.packer.solver.RecursiveSolver;
 import com.mobiquityinc.packer.utils.ConfigurationParser;
 
 /**
- * Author: Fabio Bozzo
- *
+ * Packer is the starting point of the Mobiquity assignment solution. 
+ * 
+ * @author: Fabio Bozzo
+ * 
  */
 public class Packer {
 	
 //	private static final ISolver SOLVER = new DynamicSolver(); 
 	private static final ISolver SOLVER = new RecursiveSolver();
     
+    /**
+     * @param filePath a valid absolute file path on the local filesystem
+     * @return a String containing the solutions (one line for each test case)
+     * @throws APIException
+     */
     public static String pack(String filePath) throws APIException {
     	
     	Path path = Paths.get(filePath);
@@ -46,6 +53,11 @@ public class Packer {
     	return null;
     }
     
+    /**
+     * @param line a single test case in the [capacity] : ([index],[weight],[€value])
+     * @return a comma-separated list of items indexes, or '-' if there's no solution
+     * @throws APIException
+     */
     public static String process(String line) throws APIException {
     	
     	Configuration configuration = ConfigurationParser.parse(line);
