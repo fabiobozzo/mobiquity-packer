@@ -1,6 +1,4 @@
-Packaging Challenge
-
----
+# Packaging Challenge
 
 **Introduction**
 You want to send your friend a package with different things.
